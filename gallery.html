@@ -178,8 +178,8 @@
 
     function createGallery() {
       const gallery = document.querySelector('.gallery');
-      const totalCards = 10;
-      const radius = 600;
+      const totalCards = 20; // 20 images
+      const radius = 700; // Adjusted for better spacing
       let currentAngle = 0;
 
       const prevButton = document.querySelector('.nav-button.prev');
@@ -188,7 +188,7 @@
       for (let i = 1; i <= totalCards; i++) {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<img src="images/image${i}.jpg" alt="Photo ${i}">`;
+        card.innerHTML = `<img src="Cutiepie/image${i}.jpg" alt="Photo ${i}">`; // Updated path
         gallery.appendChild(card);
       }
 
@@ -202,8 +202,8 @@
         });
       }
 
-      prevButton.addEventListener('click', () => { currentAngle += 36; updateCards(); });
-      nextButton.addEventListener('click', () => { currentAngle -= 36; updateCards(); });
+      prevButton.addEventListener('click', () => { currentAngle += 18; updateCards(); }); // Adjusted for smooth rotation
+      nextButton.addEventListener('click', () => { currentAngle -= 18; updateCards(); });
 
       updateCards();
     }
