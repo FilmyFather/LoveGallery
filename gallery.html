@@ -94,18 +94,6 @@
     .nav-button.prev { left: 30px; }
     .nav-button.next { right: 30px; }
 
-    .nav-button::before {
-      content: '';
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      border-top: 3px solid white;
-      border-right: 3px solid white;
-    }
-
-    .nav-button.prev::before { transform: rotate(-135deg); margin-left: 5px; }
-    .nav-button.next::before { transform: rotate(45deg); margin-right: 5px; }
-
     .gallery-container {
       position: fixed;
       top: 50%;
@@ -158,28 +146,20 @@
       box-shadow: 0 0 30px rgba(255, 192, 203, 0.5);
       border: 2px solid rgba(255, 192, 203, 0.8);
     }
-
-    .number {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(255, 192, 203, 0.7);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 14px;
-    }
   </style>
 </head>
 <body>
   <div class="stars"></div>
   <div class="spotlight"></div>
-  <button class="nav-button prev" aria-label="Previous"></button>
-  <button class="nav-button next" aria-label="Next"></button>
+  <button class="nav-button prev" aria-label="Previous">◀</button>
+  <button class="nav-button next" aria-label="Next">▶</button>
   <div class="gallery-container">
     <h1>Our Love Gallery</h1>
     <div class="gallery"></div>
   </div>
+
+  <!-- Background Music (YouTube) -->
+  <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA" frameborder="0" allow="autoplay" style="display:none;"></iframe>
 
   <script>
     function createStars() {
@@ -201,33 +181,14 @@
       const totalCards = 10;
       const radius = 600;
       let currentAngle = 0;
-      let isDragging = false;
-      let startX = 0;
-      let currentX = 0;
 
       const prevButton = document.querySelector('.nav-button.prev');
       const nextButton = document.querySelector('.nav-button.next');
 
-      const imageUrls = [
-        'images/image1.jpg',
-        'images/image2.jpg',
-        'images/image3.jpg',
-        'images/image4.jpg',
-        'images/image5.jpg',
-        'images/image6.jpg',
-        'images/image7.jpg',
-        'images/image8.jpg',
-        'images/image9.jpg',
-        'images/image10.jpg'
-      ];
-
-      for (let i = 0; i < totalCards; i++) {
+      for (let i = 1; i <= totalCards; i++) {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `
-          <img src="${imageUrls[i]}" alt="Photo ${i + 1}">
-          <div class="number">${i + 1}</div>
-        `;
+        card.innerHTML = `<img src="images/image${i}.jpg" alt="Photo ${i}">`;
         gallery.appendChild(card);
       }
 
@@ -238,41 +199,11 @@
           const x = Math.sin(angle) * radius;
           const z = Math.cos(angle) * radius;
           card.style.transform = `translate3d(${x}px, 0, ${z}px)`;
-          const normalizedAngle = ((currentAngle + (index * (360 / totalCards))) % 360 + 360) % 360;
-          card.classList.toggle('active', normalizedAngle > 350 || normalizedAngle < 10);
-          const opacity = Math.max(0.2, 1 - Math.abs(normalizedAngle - 180) / 180);
-          card.style.opacity = opacity;
         });
       }
 
-      prevButton.addEventListener('click', () => {
-        currentAngle += 36;
-        updateCards();
-      });
-
-      nextButton.addEventListener('click', () => {
-        currentAngle -= 36;
-        updateCards();
-      });
-
-      gallery.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-        currentX = currentAngle;
-        gallery.style.cursor = 'grabbing';
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const diff = (e.clientX - startX) * 0.5;
-        currentAngle = currentX + diff;
-        updateCards();
-      });
-
-      window.addEventListener('mouseup', () => {
-        isDragging = false;
-        gallery.style.cursor = 'grab';
-      });
+      prevButton.addEventListener('click', () => { currentAngle += 36; updateCards(); });
+      nextButton.addEventListener('click', () => { currentAngle -= 36; updateCards(); });
 
       updateCards();
     }
