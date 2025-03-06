@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Love Gallery</title>
+  <title>Our Beautiful Love Gallery Bachha 😘</title>
   <style>
     body {
       margin: 0;
@@ -161,55 +161,97 @@
   <!-- Background Music (YouTube) -->
   <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA" frameborder="0" allow="autoplay" style="display:none;"></iframe>
 
-  <script>
-    function createStars() {
-      const starsContainer = document.querySelector('.stars');
-      for (let i = 0; i < 200; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 3 + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 2 + 's';
-        starsContainer.appendChild(star);
-      }
-    }
+              
+                    card.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg)`;
+                    
+                    const normalizedAngle = ((currentAngle + extraRotation + (index * (360 / totalCards))) % 360 + 360) % 360;
+                    if (normalizedAngle > 350 || normalizedAngle < 10) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
 
-    function createGallery() {
-      const gallery = document.querySelector('.gallery');
-      const totalCards = 20; // 20 images
-      const radius = 700; // Adjusted for better spacing
-      let currentAngle = 0;
+                    const opacity = Math.max(0.2, 1 - Math.abs(normalizedAngle - 180) / 180);
+                    card.style.opacity = opacity;
+                });
+            }
 
-      const prevButton = document.querySelector('.nav-button.prev');
-      const nextButton = document.querySelector('.nav-button.next');
+            // Mouse and touch event handlers
+            gallery.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                currentX = currentAngle;
+                gallery.style.cursor = 'grabbing';
+                clearInterval(autoRotateInterval);
+            });
 
-      for (let i = 1; i <= totalCards; i++) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<img src="Cutiepie/image${i}.jpg" alt="Photo ${i}">`; // Updated path
-        gallery.appendChild(card);
-      }
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const diff = (e.clientX - startX) * 0.5;
+                currentAngle = currentX + diff;
+                updateCards();
 
-      function updateCards() {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card, index) => {
-          const angle = (currentAngle + (index * (360 / totalCards))) * (Math.PI / 180);
-          const x = Math.sin(angle) * radius;
-          const z = Math.cos(angle) * radius;
-          card.style.transform = `translate3d(${x}px, 0, ${z}px)`;
-        });
-      }
+                // Light up the appropriate button based on drag direction
+                const dragDirection = e.movementX;
+                prevButton.classList.toggle('active', dragDirection < 0);
+                nextButton.classList.toggle('active', dragDirection > 0);
+            });
 
-      prevButton.addEventListener('click', () => { currentAngle += 18; updateCards(); }); // Adjusted for smooth rotation
-      nextButton.addEventListener('click', () => { currentAngle -= 18; updateCards(); });
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                gallery.style.cursor = 'grab';
+                prevButton.classList.remove('active');
+                nextButton.classList.remove('active');
+            });
 
-      updateCards();
-    }
+            // Touch events
+            gallery.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                currentX = currentAngle;
+                clearInterval(autoRotateInterval);
+                e.preventDefault();
+            });
 
-    createStars();
-    createGallery();
-  </script>
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const diff = (e.touches[0].clientX - startX) * 0.5;
+                currentAngle = currentX + diff;
+                updateCards();
+                
+                // Light up the appropriate button based on touch direction
+                const touchDirection = e.touches[0].clientX - startX;
+                prevButton.classList.toggle('active', touchDirection < 0);
+                nextButton.classList.toggle('active', touchDirection > 0);
+                
+                e.preventDefault();
+            }, { passive: false });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+                prevButton.classList.remove('active');
+                nextButton.classList.remove('active');
+            });
+
+            // Mouse wheel handler
+            window.addEventListener('wheel', (e) => {
+                clearInterval(autoRotateInterval);
+                const delta = e.deltaX * 0.1 || e.deltaY * 0.1;
+                currentAngle += delta;
+                updateCards();
+                
+                // Light up the appropriate button based on wheel direction
+                prevButton.classList.toggle('active', delta > 0);
+                nextButton.classList.toggle('active', delta < 0);
+            });
+
+            // Initial update
+            updateCards();
+        }
+
+        // Initialize
+        createStars();
+        createGallery();
+    </script>
 </body>
-</html>
+                </html>
