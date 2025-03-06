@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Beautiful Love Gallery Bachha 😘</title>
+  <title>Our Beautiful Love Gallery ❤️</title>
   <style>
     body {
       margin: 0;
@@ -141,25 +141,33 @@
       transform: scale(1.15);
     }
 
-    .card.active {
-      transform: scale(1.1) translateZ(100px);
-      box-shadow: 0 0 30px rgba(255, 192, 203, 0.5);
-      border: 2px solid rgba(255, 192, 203, 0.8);
+    .card .caption {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
   <div class="stars"></div>
   <div class="spotlight"></div>
-  <button class="nav-button prev" aria-label="Previous">◀</button>
-  <button class="nav-button next" aria-label="Next">▶</button>
+  <button class="nav-button prev">◀</button>
+  <button class="nav-button next">▶</button>
   <div class="gallery-container">
     <h1>Our Love Gallery</h1>
     <div class="gallery"></div>
   </div>
 
-  <!-- Background Music (YouTube) -->
-  <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA" frameborder="0" allow="autoplay" style="display:none;"></iframe>
+  <!-- Background Music -->
+  <audio id="bg-music" loop autoplay>
+    <source src="love-song.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
 
   <script>
     function createStars() {
@@ -178,121 +186,27 @@
 
     function createGallery() {
         const gallery = document.querySelector('.gallery');
-        const totalCards = 10;
-        const radius = window.innerWidth < 768 ? 400 : 600;
-        let currentAngle = 0;
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
-        let autoRotateInterval;
-
-        const prevButton = document.querySelector('.nav-button.prev');
-        const nextButton = document.querySelector('.nav-button.next');
-
-        // Array of image URLs
         const imageUrls = [
-            'pic1.jpg',
-            'pic2.jpg',
-            'pic3.jpg',
-            'pic4.jpg',
-            'pic5.jpg',
-            'pic6.jpg',
-            'pic7.jpg',
-            'pic8.jpg',
-            'pic9.jpg',
-            'pic10.jpg',
-            'pic11.jpg'
+            { src: 'pic1.jpg', caption: 'Our First Date ❤️' },
+            { src: 'pic2.jpg', caption: 'Sunset Moments 🌅' },
+            { src: 'pic3.jpg', caption: 'Beach Walks 🏖️' },
+            { src: 'pic4.jpg', caption: 'Silly Selfies 🤪' },
+            { src: 'pic5.jpg', caption: 'Laughing Together 😆' },
+            { src: 'pic6.jpg', caption: 'Candlelight Dinner 🍷' }
         ];
-
-        // Create cards...
-        for (let i = 0; i < totalCards; i++) {
+        
+        imageUrls.forEach((img, index) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `
-                <img src="${imageUrls[i]}" alt="Romantic photo ${i + 1}">
-                <div class="number">${i + 1}</div>
-            `;
+            card.innerHTML = `<img src="${img.src}" alt="Photo ${index + 1}"><div class="caption">${img.caption}</div>`;
             gallery.appendChild(card);
-        }
-
-        function rotateGallery(direction) {
-            clearInterval(autoRotateInterval);
-            currentAngle += direction * 36; // 360 / 10 cards = 36 degrees per card
-            updateCards();
-        }
-
-        // Navigation button click handlers
-        prevButton.addEventListener('click', () => rotateGallery(1));
-        nextButton.addEventListener('click', () => rotateGallery(-1));
-
-        function updateCards(extraRotation = 0) {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                const angle = (currentAngle + extraRotation + (index * (360 / totalCards))) * (Math.PI / 180);
-                const x = Math.sin(angle) * radius;
-                const z = Math.cos(angle) * radius;
-                const rotateY = angle * (180 / Math.PI);
-
-                card.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg)`;
-
-                const normalizedAngle = ((currentAngle + extraRotation + (index * (360 / totalCards))) % 360 + 360) % 360;
-                if (normalizedAngle > 350 || normalizedAngle < 10) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
-
-                const opacity = Math.max(0.2, 1 - Math.abs(normalizedAngle - 180) / 180);
-                card.style.opacity = opacity;
-            });
-        }
-
-        // Mouse and touch event handlers
-        gallery.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            currentX = currentAngle;
-            gallery.style.cursor = 'grabbing';
-            clearInterval(autoRotateInterval);
         });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const diff = (e.clientX - startX) * 0.5;
-            currentAngle = currentX + diff;
-            updateCards();
-
-            // Light up the appropriate button based on drag direction
-            const dragDirection = e.movementX;
-            prevButton.classList.toggle('active', dragDirection < 0);
-            nextButton.classList.toggle('active', dragDirection > 0);
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            gallery.style.cursor = 'grab';
-            prevButton.classList.remove('active');
-            nextButton.classList.remove('active');
-        });
-
-        // Auto-rotate functionality
-        function startAutoRotate() {
-            autoRotateInterval = setInterval(() => {
-                rotateGallery(-1);
-            }, 3000); // Rotates every 3 seconds
-        }
-
-        startAutoRotate();
-
-        // Reset auto-rotate on user interaction
-        window.addEventListener('mousedown', () => clearInterval(autoRotateInterval));
-        window.addEventListener('mouseup', startAutoRotate);
-
-        updateCards(); // Initial positioning
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         createStars();
         createGallery();
     });
-</script>
+  </script>
+</body>
+</html>
