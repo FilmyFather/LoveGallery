@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Beautiful Love Gallery ❤️</title>
+  <title>Our Beautiful Love Gallery Bachha 😘</title>
   <style>
     body {
       margin: 0;
@@ -140,17 +140,6 @@
     .card:hover img {
       transform: scale(1.15);
     }
-
-    .card .caption {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      font-size: 16px;
-    }
   </style>
 </head>
 <body>
@@ -163,11 +152,8 @@
     <div class="gallery"></div>
   </div>
 
-  <!-- Background Music -->
-  <audio id="bg-music" loop autoplay>
-    <source src="love-song.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
+  <!-- Background Music (YouTube) -->
+  <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA" frameborder="0" allow="autoplay" style="display:none;"></iframe>
 
   <script>
     function createStars() {
@@ -187,18 +173,23 @@
     function createGallery() {
         const gallery = document.querySelector('.gallery');
         const imageUrls = [
-            { src: 'pic1.jpg', caption: 'Our First Date ❤️' },
-            { src: 'pic2.jpg', caption: 'Sunset Moments 🌅' },
-            { src: 'pic3.jpg', caption: 'Beach Walks 🏖️' },
-            { src: 'pic4.jpg', caption: 'Silly Selfies 🤪' },
-            { src: 'pic5.jpg', caption: 'Laughing Together 😆' },
-            { src: 'pic6.jpg', caption: 'Candlelight Dinner 🍷' }
+            'pic1.jpg',
+            'pic2.jpg',
+            'pic3.jpg',
+            'pic4.jpg',
+            'pic5.jpg',
+            'pic6.jpg',
+            'pic7.jpg',
+            'pic8.jpg',
+            'pic9.jpg',
+            'pic10.jpg',
+            'pic11.jpg'
         ];
         
-        imageUrls.forEach((img, index) => {
+        imageUrls.forEach((imgSrc, index) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `<img src="${img.src}" alt="Photo ${index + 1}"><div class="caption">${img.caption}</div>`;
+            card.innerHTML = `<img src="${imgSrc}" alt="Romantic photo ${index + 1}">`;
             gallery.appendChild(card);
         });
     }
