@@ -152,51 +152,52 @@
     <div class="gallery"></div>
   </div>
 
-  <!-- Background Music (YouTube) -->
-  <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA" frameborder="0" allow="autoplay" style="display:none;"></iframe>
+  <iframe id="bg-music" width="0" height="0"
+    src="https://www.youtube.com/embed/Y1GaZ_4JDkA?autoplay=1&loop=1&playlist=Y1GaZ_4JDkA"
+    frameborder="0" allow="autoplay" style="display:none;"></iframe>
 
   <script>
     function createStars() {
-        const starsContainer = document.querySelector('.stars');
-        for (let i = 0; i < 200; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = Math.random() * 3 + 'px';
-            star.style.height = star.style.width;
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 2 + 's';
-            starsContainer.appendChild(star);
-        }
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 200; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.width = Math.random() * 3 + 'px';
+        star.style.height = star.style.width;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 2 + 's';
+        starsContainer.appendChild(star);
+      }
     }
 
     function createGallery() {
-        const gallery = document.querySelector('.gallery');
-        const imageUrls = [
-            'img1.jpg',
-            'img2.jpg',
-            'img3.jpg',
-            'pic4.jpg',
-            'pic5.jpg',
-            'pic6.jpg',
-            'pic7.jpg',
-            'pic8.jpg',
-            'pic9.jpg',
-            'pic10.jpg',
-            'pic11.jpg'
-        ];
-        
-        imageUrls.forEach((imgSrc, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<img src="${imgSrc}" alt="Romantic photo ${index + 1}">`;
-            gallery.appendChild(card);
-        });
+      const gallery = document.querySelector('.gallery');
+      const imageUrls = [
+        'images/img1.jpg',
+        'images/img2.jpg',
+        'images/img3.jpg',
+        'images/pic4.jpg',
+        'images/pic5.jpg',
+        'images/pic6.jpg',
+        'images/pic7.jpg',
+        'images/pic8.jpg',
+        'images/pic9.jpg',
+        'images/pic10.jpg',
+        'images/pic11.jpg'
+      ];
+
+      imageUrls.forEach((imgSrc, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<img src="${imgSrc}" alt="Romantic photo ${index + 1}" onerror="this.style.display='none'">`;
+        gallery.appendChild(card);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        createStars();
-        createGallery();
+      createStars();
+      createGallery();
     });
   </script>
 </body>
