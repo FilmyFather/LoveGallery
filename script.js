@@ -8,21 +8,37 @@ const gradients = [
 
 let currentGradient = 0;
 
+// Change quote/emoji every few seconds
 setInterval(() => {
-  document.getElementById("love-quote").style.opacity = "0";
+  const loveQuote = document.getElementById("love-quote");
+  loveQuote.style.opacity = "0";
   setTimeout(() => {
-    document.getElementById("love-quote").innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-    document.getElementById("love-quote").style.opacity = "1";
+    loveQuote.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    loveQuote.style.opacity = "1";
   }, 1000);
 }, 4000);
 
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+setInterval(createHeart, 600);
+
+// Change color background
 document.querySelector('.color-btn').addEventListener('click', () => {
   currentGradient = (currentGradient + 1) % gradients.length;
   document.body.style.background = gradients[currentGradient];
 });
 
+// Redirect to gallery
 document.querySelector('.enter-btn').addEventListener('click', () => {
+  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   setTimeout(() => {
     window.location.href = 'gallery.html';
-  }, 2000);
+  }, 1500);
 });
